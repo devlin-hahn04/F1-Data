@@ -2,6 +2,7 @@ import customtkinter
 import requests
 import tkinter as tk
 from tkinter import font as tkFont
+import NextRace
 
 
 customtkinter.set_appearance_mode("dark")
@@ -241,24 +242,24 @@ def BackButton():
 
     MainMenu()
 
-def NextRace():
+# def NextRace():
 
-    next_race_url = 'http://ergast.com/api/f1/current/next.json'
-    response = requests.get(next_race_url)
+#     next_race_url = 'http://ergast.com/api/f1/current/next.json'
+#     response = requests.get(next_race_url)
 
-    if response.status_code == 200:
-        data = response.json()
-        race_info = data['MRData']['RaceTable']['Races'][0]
-        race_name = race_info['raceName']
-        race_date = race_info['date']
-        race_time = race_info['time']
-        circuit_name = race_info['Circuit']['circuitName']
-        location = race_info['Circuit']['Location']
-        location_str = f"{location['locality']}, {location['country']}"
+#     if response.status_code == 200:
+#         data = response.json()
+#         race_info = data['MRData']['RaceTable']['Races'][0]
+#         race_name = race_info['raceName']
+#         race_date = race_info['date']
+#         race_time = race_info['time']
+#         circuit_name = race_info['Circuit']['circuitName']
+#         location = race_info['Circuit']['Location']
+#         location_str = f"{location['locality']}, {location['country']}"
 
-        return f"Upcoming Race: \n{race_name}\nDate: {race_date}\nCircuit: {circuit_name}\nLocation: {location_str}"
-    else:
-        return "Failed to fetch next race information"
+#         return f"Upcoming Race: \n{race_name}\nDate: {race_date}\nCircuit: {circuit_name}\nLocation: {location_str}"
+#     else:
+#         return "Failed to fetch next race information"
 
 
 
@@ -273,7 +274,7 @@ def MainMenu():
     WelcomeLabel = customtkinter.CTkLabel(master=frame, text=f"Welcome", font=("FormulaFont.ttf", 24, "bold"))
     WelcomeLabel.grid(row=0, column=0, columnspan=2, pady=12, padx=10)
 
-    NextRaceInfo= NextRace()
+    NextRaceInfo= NextRace.NextRace()
     NextRaceLabel= customtkinter.CTkLabel(master= frame, text=NextRaceInfo, font=("FormulaFont.ttf", 18))
     NextRaceLabel.grid(row=1, column=4, columnspan=2, pady=12, padx=10)
 
