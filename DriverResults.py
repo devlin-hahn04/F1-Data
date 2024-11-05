@@ -2,13 +2,7 @@ import customtkinter
 import requests
 
 def ShowDriverResults(DriverEntry, frame):
-    import requests
-    import customtkinter
-
-    raceList1= []
-    raceList2= []
-
-
+    
     print(DriverEntry.get())
 
     # Endpoint to get the race results for the driver
@@ -19,20 +13,27 @@ def ShowDriverResults(DriverEntry, frame):
         data = response.json()
         races = data['MRData']['RaceTable']['Races']
 
-        half_index = len(races) // 2
-        raceList1 = races[:half_index]
-        raceList2 = races[half_index:]
+        # Divide the races into three parts
+        third_index = len(races) // 3
+        raceList1 = races[:third_index]
+        raceList2 = races[third_index:2*third_index]
+        raceList3 = races[2*third_index:]
 
+        # Create frames for each column
         column_frame_1 = customtkinter.CTkFrame(master=frame)
         column_frame_1.grid(row=2, column=0, padx=10, pady=10, sticky="nsew")
         column_frame_2 = customtkinter.CTkFrame(master=frame)
         column_frame_2.grid(row=2, column=1, padx=10, pady=10, sticky="nsew")
+        column_frame_3 = customtkinter.CTkFrame(master=frame)
+        column_frame_3.grid(row=2, column=2, padx=10, pady=10, sticky="nsew")
 
+        # Configure the grid columns
         frame.grid_rowconfigure(2, weight=1)
         frame.grid_columnconfigure(0, weight=1)
         frame.grid_columnconfigure(1, weight=1)
+        frame.grid_columnconfigure(2, weight=1)
 
-        # Display the driver results
+        # Display the driver results in each column
         row = 1
         for race in raceList1:
             race_name = race['raceName']
@@ -52,6 +53,17 @@ def ShowDriverResults(DriverEntry, frame):
 
             result_text = f"{race_name}: {position}th"
             ResultsLabel = customtkinter.CTkLabel(master=column_frame_2, text=result_text, font=("FormulaFont.ttf", 8, "bold"))
+            ResultsLabel.grid(row=row, column=0, pady=1, padx=10, sticky="w")
+            row += 1
+
+        row = 1
+        for race in raceList3:
+            race_name = race['raceName']
+            race_result = race['Results'][0]
+            position = race_result['position']
+
+            result_text = f"{race_name}: {position}th"
+            ResultsLabel = customtkinter.CTkLabel(master=column_frame_3, text=result_text, font=("FormulaFont.ttf", 8, "bold"))
             ResultsLabel.grid(row=row, column=0, pady=1, padx=10, sticky="w")
             row += 1
     
